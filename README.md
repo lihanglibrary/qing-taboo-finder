@@ -4,8 +4,19 @@ QingTabooFinder 清代避讳定位器是一个面向古籍研究的本地 Python
 
 它用于在已经整理或 OCR 完成的古籍文本（TXT / DOCX / EPUB）中，快速定位清代避讳相关字词的出现位置，辅助研究者回到古籍图像或古籍实物进行实证校勘与版本判断。
 
+## Releases 发布版本
+
+想直接使用桌面版，可前往 [最新发布版本](https://github.com/lihanglibrary/qing-taboo-finder/releases/latest) 下载，无需安装 Python。
+
+- Windows：下载并解压 `QingTabooFinder-Windows.zip`。
+- macOS：下载并解压 `QingTabooFinder-macOS.zip`。
+
+首次打开、开始查验和查看报告的具体步骤见 [桌面版使用说明](docs/desktop-user-guide.md)。
+
 ## Contents 目录
 
+- [发布版本](#releases-发布版本)
+- [桌面版使用说明](docs/desktop-user-guide.md)
 - [项目意义](#project-significance-项目意义)
 - [作者](#author-作者)
 - [许可证](#license-许可证)
@@ -24,8 +35,6 @@ QingTabooFinder 清代避讳定位器是一个面向古籍研究的本地 Python
   - [修改规则表](#edit-the-rule-table-修改规则表)
   - [一次性命令](#optional-command-line-use-可选一次性命令)
   - [常见问题](#common-problems-常见问题)
-- [桌面版使用说明](docs/desktop-user-guide.md)
-- [发布版本](#releases-发布版本)
 - [输出文件](#output)
 - [学术背景与研究提示](#academic-background-学术背景与研究提示)
 
@@ -370,12 +379,6 @@ python3 run.py \
 - 分段位置
 - 分段位置百分比
 - 命中上下文
-
-## Releases 发布版本
-
-面向一般使用者的桌面版会发布在 GitHub 的 **Releases** 页面。发布包不要求安装 Python：Windows 用户下载 `QingTabooFinder-Windows.zip`，macOS 用户下载 `QingTabooFinder-macOS.zip`。请阅读 [桌面版使用说明](docs/desktop-user-guide.md) 了解下载、首次打开和报告导出步骤。
-
-维护者创建形如 `v0.1.0` 的版本 tag 并推送后，GitHub Actions 会分别在 macOS 和 Windows 环境打包，并自动创建携带两个下载包的 Release。
 
 ## Academic Background 学术背景与研究提示
 
