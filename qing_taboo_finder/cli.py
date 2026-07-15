@@ -11,10 +11,7 @@ from .constants import (
     CHECK_MODE_DEFINITIONS,
 )
 from .csv_loader import load_emperor_records
-from .detector import detect_hits
-from .exporter import export_reports
-from .readers import load_document
-from .segmenter import segment_text
+from .service import run_detection
 from .taboo_rules import build_taboo_entries, list_selectable_emperors
 
 
@@ -167,27 +164,25 @@ def run(args: argparse.Namespace) -> int:
         raise ValueError(f"目标皇帝不在 CSV 数据中：{emperor}")
 
     mode_key = normalize_input(args.mode) if args.mode else prompt_mode()
-    entries, message = build_taboo_entries(records, emperor, mode_key)
-    document = load_document(document_path)
-    segments = segment_text(document.text)
-    hits = detect_hits(document.path.name, len(document.text), segments, entries)
-
-    print(f"\n文档：{document.path.name}")
-    print(f"规则文件：{csv_path}")
-    print(f"查验模式：{CHECK_MODE_DEFINITIONS[mode_key]['label']}")
-    print(f"分段数：{len(segments)}")
-    print(f"启用避讳项数：{len(entries)}")
-    if message:
-        print(f"提示：{message}")
-
-    summarize_hits(hits)
-    csv_report, excel_report = export_reports(
+    result = run_detection(
+        csv_path,
+        document_path,
+        emperor,
+        mode_key,
         normalize_input(args.output_dir),
-        document.path.name,
-        hits,
     )
-    print(f"\n已导出 CSV 报告：{csv_report}")
-    print(f"已导出 Excel 报告：{excel_report}")
+
+    print(f"\n文档：{result.document_path.name}")
+    print(f"规则文件：{result.csv_path}")
+    print(f"查验模式：{CHECK_MODE_DEFINITIONS[mode_key]['label']}")
+    print(f"分段数：{result.segment_count}")
+    print(f"启用避讳项数：{result.entry_count}")
+    if result.message:
+        print(f"提示：{result.message}")
+
+    summarize_hits(result.hits)
+    print(f"\n已导出 CSV 报告：{result.csv_report}")
+    print(f"已导出 Excel 报告：{result.excel_report}")
     return 0
 
 

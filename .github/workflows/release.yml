@@ -1,0 +1,78 @@
+name: Build desktop release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build for ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            platform: macOS
+            asset_name: QingTabooFinder-macOS.zip
+          - os: windows-latest
+            platform: Windows
+            asset_name: QingTabooFinder-Windows.zip
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependencies
+        run: python -m pip install ".[build]"
+
+      - name: Run application tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Build macOS application
+        if: runner.os == 'macOS'
+        run: |
+          pyinstaller --noconfirm --windowed --name QingTabooFinder --add-data "data:data" desktop.py
+          ditto -c -k --sequesterRsrc --keepParent "dist/QingTabooFinder.app" "${{ matrix.asset_name }}"
+
+      - name: Build Windows application
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          pyinstaller --noconfirm --windowed --name QingTabooFinder --add-data "data;data" desktop.py
+          Compress-Archive -Path "dist/QingTabooFinder/*" -DestinationPath "${{ matrix.asset_name }}"
+
+      - name: Upload release asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: ${{ matrix.asset_name }}
+          if-no-files-found: error
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download desktop packages
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" release-assets/* \
+            --repo "${{ github.repository }}" \
+            --title "QingTabooFinder ${{ github.ref_name }}" \
+            --generate-notes
