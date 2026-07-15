@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qing-taboo-finder"
+version = "0.1.0"
+description = "QingTabooFinder 清代避讳定位器: locate taboo-character evidence in OCRed classical Chinese texts"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Hang Li", email = "" }
+]
+dependencies = [
+  "beautifulsoup4>=4.12.0",
+  "EbookLib>=0.18",
+  "openpyxl>=3.1.0",
+  "python-docx>=1.1.0"
+]
+
+[project.scripts]
+qing-taboo-finder = "qing_taboo_finder.cli:main"
