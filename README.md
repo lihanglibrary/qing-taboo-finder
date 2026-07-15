@@ -7,7 +7,6 @@ QingTabooFinder 清代避讳定位器是一个面向古籍研究的本地 Python
 ## Contents 目录
 
 - [项目意义](#project-significance-项目意义)
-- [项目名称](#project-name-命名说明)
 - [作者](#author-作者)
 - [许可证](#license-许可证)
 - [项目目录结构](#repository-layout)
@@ -42,13 +41,6 @@ QingTabooFinder 清代避讳定位器是一个面向古籍研究的本地 Python
 - 先在已经整理好的电子文本里批量定位避讳线索。
 - 输出章节、位置、上下文、所属皇帝等定位信息。
 - 使用者可以利用定位结果回溯到古籍图像或者古籍实物，提升版本考据效率。
-
-## Project Name 命名说明
-
-项目采用中英文结合命名：`QingTabooFinder 清代避讳定位器`。
-
-- 中文名称直观，方便主要用户群（中国古籍研究者）快速理解用途。
-- 英文名称有助于国际学者和 GitHub 社区检索与复用。
 
 ## Author 作者
 
